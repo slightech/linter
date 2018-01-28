@@ -17,7 +17,7 @@ import pylint.lint
 import re
 import subprocess
 
-CLANG_FORMAT_DIFF_EXECUTABLE = "clang-format-diff-3.8"
+CLANG_FORMAT_DIFF_EXECUTABLE = "clang-format-diff"
 AUTOPEP8_FORMAT_EXECUTABLE = "autopep8"
 
 

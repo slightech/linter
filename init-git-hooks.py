@@ -18,6 +18,7 @@ cpplint_url = "https://raw.githubusercontent.com/google/styleguide/gh-pages/cppl
 Set this variable to use the local modified copy of the newest cpplint script:
 
 default_cpplint = "cpplint.py"
+default_pylint = "pylint.rc"
 """
 
 import os
@@ -27,11 +28,13 @@ import subprocess
 import sys
 
 default_cpplint = "modified_cpplint.py"
+default_pylint = "modified_pylint.rc"
 
 cpplint_url = ""
-pylint_url = "https://raw.githubusercontent.com/vinitkumar/googlecl/6dc04b489dba709c53d2f4944473709617506589/googlecl-pylint.rc"
+pylint_url = ""
+# pylint_url = "https://raw.githubusercontent.com/vinitkumar/googlecl/6dc04b489dba709c53d2f4944473709617506589/googlecl-pylint.rc"
 
-clang_format_diff_executable = "clang-format-diff-3.8"
+clang_format_diff_executable = "clang-format-diff"
 
 
 def download_file_from_url(url, file_path):
@@ -79,10 +82,17 @@ def main():
       print("Failed to copy default cpplint.")
       exit(1)
 
-  download_file_from_url(pylint_url, script_directory + "/pylint.rc")
-  if not os.path.isfile(script_directory + "/pylint.rc"):
-    print("ERROR: Could not download pylint.rc file!")
-    exit(1)
+  if pylint_url != "":
+    download_file_from_url(pylint_url, script_directory + "/pylint.rc")
+    if not os.path.isfile(script_directory + "/pylint.rc"):
+      print("ERROR: Could not download pylint.rc file!")
+      exit(1)
+  else:
+    cp_params = (script_directory + "/default/" + default_pylint + " " +
+                 script_directory + "/pylint.rc")
+    if subprocess.call("cp " + cp_params, shell=True) != 0:
+      print("Failed to copy default pylint.")
+      exit(1)
 
   if not command_exists(clang_format_diff_executable):
     print("ERROR: " + clang_format_diff_executable + " is not installed!")
