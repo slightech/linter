@@ -64,6 +64,23 @@ def command_exists(cmd):
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE) == 0
 
 
+def parse_args():
+  import argparse
+  parser = argparse.ArgumentParser(
+      prog=os.path.basename(__file__),
+      formatter_class=argparse.RawTextHelpFormatter,
+      description='usage examples:'
+      '\n  python %(prog)s -hr HOOKS_ROOT')
+  parser.add_argument(
+      '-hr',
+      '--hooks-root',
+      dest='hooks_root',
+      metavar='HOOKS_ROOT',
+      required=False,
+      help='the hooks root folder')
+  return parser.parse_args()
+
+
 def main():
   """ Download cpplint.py and pylint.py and installs the git hooks"""
   script_directory = os.path.dirname(sys.argv[0])
@@ -102,15 +119,19 @@ def main():
     print("ERROR: autopep8 is not installed! Try: pip install autopep8")
     exit(1)
 
-  # Get git root folder of parent repository.
-  repo_root = get_git_repo_root(script_directory + '/../')
+  args = parse_args()
+  if args.hooks_root:
+    hooks_root = args.hooks_root
+  else:
+    # Get git root folder of parent repository.
+    repo_root = get_git_repo_root(script_directory + '/../')
+    hooks_root = repo_root + "/.git/hooks"
 
   # Copy git hooks.
   cp_params = script_directory + "/git-hooks.py " + \
-      repo_root + "/.git/hooks/pre-commit"
+      hooks_root + "/pre-commit"
   if subprocess.call("cp " + cp_params, shell=True) != 0:
-    print("Failed to copy githooks to "
-          "{}...".format((repo_root + "/.git/hooks/")))
+    print("Failed to copy githooks to {}/...".format(hooks_root))
     exit(1)
 
   print("Success, githooks initialized!")
