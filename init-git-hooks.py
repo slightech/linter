@@ -125,7 +125,7 @@ def main():
   else:
     # Get git root folder of parent repository.
     repo_root = get_git_repo_root(script_directory + '/../')
-    hooks_root = repo_root + "/.git/hooks"
+    hooks_root = repo_root.decode() + "/.git/hooks"
 
   # Copy git hooks.
   cp_params = script_directory + "/git-hooks.py " + \
