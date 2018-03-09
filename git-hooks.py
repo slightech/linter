@@ -13,7 +13,7 @@ def run_command_in_folder(command, folder):
                                    stdout=subprocess.PIPE)
     stdout, _ = run_command.communicate()
     command_output = stdout.rstrip()
-    return command_output
+    return command_output.decode()
 
 
 def get_git_repo_root(some_folder_in_root_repo='./'):
