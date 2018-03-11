@@ -85,6 +85,8 @@ def check_cpp_lint(staged_files, cpplint_file, ascii_art, repo_root):
           break
         # Stop if the root of the git repo is reached.
         if os.path.isdir(search_dir + '/.git'):
+          package_root = search_dir
+          found_package_root = True
           break
         search_dir = os.path.dirname(search_dir)
       assert found_package_root, ("Could not find the root of the "
