@@ -31,6 +31,7 @@ default_cpplint = "modified_cpplint.py"
 default_pylint = "modified_pylint.rc"
 
 cpplint_url = ""
+# cpplint_url = "https://raw.githubusercontent.com/cpplint/cpplint/master/cpplint.py"
 pylint_url = ""
 # pylint_url = "https://raw.githubusercontent.com/vinitkumar/googlecl/6dc04b489dba709c53d2f4944473709617506589/googlecl-pylint.rc"
 
@@ -41,7 +42,7 @@ def download_file_from_url(url, file_path):
   """Download a file from a HTTPS URL. Verification is enabled."""
   request = requests.get(url, verify=True, stream=True)
   request.raw.decode_content = True
-  with open(file_path, 'w') as downloaded_file:
+  with open(file_path, 'wb') as downloaded_file:
     shutil.copyfileobj(request.raw, downloaded_file)
 
 
