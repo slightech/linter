@@ -5570,7 +5570,8 @@ def CheckForIncludeWhatYouUse(filename, clean_lines, include_state, error,
 
   # include_dict is modified during iteration, so we iterate over a copy of
   # the keys.
-  header_keys = include_dict.keys()
+  # header_keys = include_dict.keys()
+  header_keys = include_dict.copy().keys()
   for header in header_keys:
     (same_module, common_path) = FilesBelongToSameModule(abs_filename, header)
     fullpath = common_path + header
